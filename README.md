@@ -1,0 +1,2 @@
+# SeedKmeans
+Kmeans versão semissupervisionando
