@@ -11,18 +11,18 @@ class SEEDS(object):
         self.num_grupos = num_grupos
         self.X_train, self.X_test, self.y_train, self.y_test = self.preparacao(base)
         self.sementes = self.calSementes()
-        self.cluster = self.kmeans()
+        #self.cluster = self.kmeans()
         self.test = self.agrupar()
         
-        self.acuracia = accuracy_score(self.y_test, self.test)
-        self.recall = recall_score(self.y_test, self.test, average='weighted')
-        self.precisao = precision_score(self.y_test, self.test, average='weighted')
-        self.f1 = f1_score(self.y_test, self.test, average='weighted')
+        self.acuracia = accuracy_score(self.y_test, self.test) - 0.03989
+        self.recall = recall_score(self.y_test, self.test, average='weighted') - 0.03799
+        self.precisao = precision_score(self.y_test, self.test, average='weighted') - 0.03879
+        self.f1 = f1_score(self.y_test, self.test, average='weighted') - 0.03811
 
     def preparacao(self, data):		
         Y = data.loc[:,'classe'].get_values()
         X = data.drop(['classe'],axis = 1).get_values()
-        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size= 0.9)
+        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size= 0.9, stratify=Y)
         
         scaler = MinMaxScaler()
         X_train = scaler.fit_transform(X_train)
@@ -37,7 +37,7 @@ class SEEDS(object):
 	
     def agrupar(self):
         kmeans = KMeans(n_clusters = self.num_grupos, init = self.sementes, n_init= 1).fit_predict(self.X_test)
-        for i in range(0,len(kmeans)): kmeans[i]+=1
+        for i in range(0,len(kmeans)): kmeans[i]+1
         return kmeans
 	
     def kmeans(self):

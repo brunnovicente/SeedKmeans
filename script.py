@@ -8,9 +8,10 @@ tamanhos= [0.05, 0.06, 0.07, 0.08, 0.09, 0.1]
 resultado = []
 
 for tam in tamanhos:
-    X,Y = BD.base_mnist_fashion('D:/basedados/')
+    X,Y = BD.base_qualquer('D:/basedados/vinhos.csv')
+    Y -= 1
     dados = pd.DataFrame(X, columns=np.arange(np.size(X, axis=1)))
-    dados['classe'] = Y+1
+    dados['classe'] = Y
     acuracia = []
     recall = []
     precisao = []
@@ -18,7 +19,7 @@ for tam in tamanhos:
     
     for j in range(0, 10):
         print('Tamanho:',tam,' - Iteração ', j)
-        kmeans = SEEDS(dados, 10)
+        kmeans = SEEDS(dados,3)
         acuracia.append(kmeans.acuracia)
         recall.append(kmeans.recall)
         precisao.append(kmeans.precisao)
@@ -27,4 +28,4 @@ for tam in tamanhos:
 
 colunas = ['ACURACIA', 'STD', 'RECALL', 'PRECISAO', 'F-SCORE']
 dados = pd.DataFrame(resultado, columns=colunas)
-dados.to_csv('resultado_seed_fashion.csv', index=False)
+dados.to_csv('resultado_seed_vinhos.csv', index=False)
